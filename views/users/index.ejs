@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title><% title %></title>
+        <link href="https://cdn.jsdeliver.net/npm/bootstrap@5.0.2/dist/css/bootstrap.css" rel="stylesheet" crossorigin="anonymous">
+        <link rel="stylesheet" href="/stylesheets/style.css" />
+    </head>
+
+    <body role="main">
+        <table class="table">
+            <% for(var obj of content){ %>
+                <tr>
+                    <th><%= obj.id %></th>
+                    <td><%= obj.name %></td>
+                    <td><%= obj.mail %></td>
+                    <td><%= obj.age %></td>
+                </tr>
+            <% } %>
+        </table>
+    </body>
+</html>
