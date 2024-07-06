@@ -3,10 +3,25 @@ var router = express.Router();
 
 const ps = require('@prisma/client');
 const prisma = new ps.PrismaClient();
+const pagesize = 2;
+var lastCorsor = 0;
+var cursor = 1;
+
+prisma.$use(async (params,next) => {
+    const result = await next(params);
+    cursor = result[result.length - 1].id;
+    if(cursor == lastCorsor){
+        cursor = 1;
+    }
+    lastCorsor = cursor;
+    return result;
+});
 
 router.get("/",(req,res,next) => {
     prisma.user.findMany({
-        orderBy:[{name:'asc'}]
+        orderBy:[{id:'asc'}],
+        cursor:{id:cursor},
+        take:pagesize,
     }).then(users => {
         const data = {
             title:'Users/Index',
@@ -14,27 +29,6 @@ router.get("/",(req,res,next) => {
         }
         res.render('users/index' , data);
     });
-
-    // const id = +req.query.id;
-    // if(!id){
-    //     prisma.user.findMany().then(users=>{
-    //         const data = {
-    //             title:"User/Index" , 
-    //             content:users
-    //         }
-    //         res.render("users/index" , data);
-    //     });
-    // }else{
-    //     prisma.user.findMany({
-    //         where:{id: {lte:id}}
-    //     }).then(user => {
-    //         var data = {
-    //             title:"Users/Index",
-    //             content: user
-    //         }
-    //         res.render("users/index",data);
-    //     });
-    // }
 });
 router.get("/find",(req,res,next) => {
     // const min = +req.query.min;
