@@ -22,4 +22,16 @@ model User {
   age Int @default(0)
   createAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  messages Board[]
+}
+
+model Board {
+  id Int @id @default(autoincrement())
+  message String
+  account User @relation(fields: [accountId],references:[id])
+  accountId Int
+  createdAd DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
 }
