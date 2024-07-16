@@ -9,7 +9,8 @@ var cursor = 1;
 
 prisma.$use(async (params,next) => {
     const result = await next(params);
-    cursor = result[result.length - 1].id;
+    // cursor = result[result.length - 1].id; 元の見本はこれ
+    cursor = result.id - 1;
     if(cursor == lastCorsor){
         cursor = 1;
     }
@@ -64,7 +65,8 @@ router.get('/add',(req,res,next) => {
 });
 
 router.post('/add',(req,res,next) => {
-    prisma.User.create({
+    console.log("name: req.body.name = " + req.body.name)
+    prisma.user.create({
         data:{
             name: req.body.name,
             pass: req.body.pass,
